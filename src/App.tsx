@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+import { styled } from '@mui/material/styles';
 
 const initialState = [
   {
@@ -18,9 +20,38 @@ const initialState = [
   }
 ]
 
-function App() {
+const CustomButton = styled(Button)({
+  backgroundColor: '#000',
+  color: '#fff',
+  fontFamily: [
+    'Times New Roman',
+    'Times',
+    'serif',
+  ],
+  fontWeight: 'bold',
+  height: '42px',
+  marginLeft: '1px',
+  '&:hover': {
+    backgroundColor: '#808080',
+    color: '#fff'
+  },
 
-  const [todos, setTodos] = useState(initialState);
+})
+
+function App() {
+  const [task, setTask] = useState<string>('')
+  const [todos, setTodos] = useState<{task: string}[]>(initialState);
+
+  const handleNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTask(e.target.value);
+  }
+
+  const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if(task === '') return
+    setTodos([...todos,{ task }])
+    setTask('')
+  }
 
   return (
     <>
@@ -32,7 +63,15 @@ function App() {
             className='input'
             size="small"
             label="New Todo"
+            value={task}
+            onChange={handleNewTask}
           />
+          <CustomButton 
+            variant="contained"
+            onClick={handleAdd}
+          >
+            ADD
+          </CustomButton>
         </section>
         <section className="list">
           <List>

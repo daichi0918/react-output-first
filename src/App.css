@@ -28,18 +28,21 @@
 }
 
 .list {
-  margin-left: 200px;
-  margin-right: 200px;
-
+  margin: 30px 200px;
+  /* margin-left: 200px;
+  margin-right: 200px; */
 }
 
 .list-text {
   font-size: 16px;
 }
 
-.icon {
-
+.add-button {
+  margin-left: 15px;
+  height: 40px;
+  color: #61dafb;
 }
+
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;
