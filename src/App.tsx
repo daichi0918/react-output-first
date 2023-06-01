@@ -39,18 +39,25 @@ const CustomButton = styled(Button)({
 })
 
 function App() {
-  const [task, setTask] = useState<string>('')
+  const [inputText, setInputText] = useState<string>('')
   const [todos, setTodos] = useState<{task: string}[]>(initialState);
 
   const handleNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTask(e.target.value);
+    setInputText(e.target.value);
   }
 
-  const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    if(task === '') return
-    setTodos([...todos,{ task }])
-    setTask('')
+  const handleAdd = () => {
+    if(inputText === '') return
+    setTodos([...todos,{ task: inputText }])
+    setInputText('')
+  }
+
+  const handleDelete = (index: number) => {
+    const todoArray = [...todos];
+    // 下記の書き方だと、削除したものをdeletedTodoArrayに格納するため期待した値にならない
+    // const deletedTodoArray = todoArray.splice(index, 1);
+    todoArray.splice(index,1);
+    setTodos(todoArray);
   }
 
   return (
@@ -63,12 +70,12 @@ function App() {
             className='input'
             size="small"
             label="New Todo"
-            value={task}
+            value={inputText}
             onChange={handleNewTask}
           />
           <CustomButton 
             variant="contained"
-            onClick={handleAdd}
+            onClick={()=>handleAdd()}
           >
             ADD
           </CustomButton>
@@ -79,7 +86,14 @@ function App() {
               <ListItem 
                 key={index}
                 secondaryAction={
-                  <IconButton className="icon" edge="end" aria-label="delete">
+                  <IconButton 
+                    className="icon" 
+                    edge="end" 
+                    aria-label="delete"
+                    // 下記の書き方は画面描画時に実行されてしまうため、アロー関数で書かなければならない。
+                    // onClick={handleDelete(index)}
+                    onClick={()=>handleDelete(index)}
+                  >
                     <DeleteIcon 
                       sx={{
                         color: '#fff'
