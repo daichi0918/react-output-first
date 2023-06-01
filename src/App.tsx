@@ -75,6 +75,8 @@ function App() {
           />
           <CustomButton 
             variant="contained"
+            // 下記でも問題ないのはなぜ？
+            // onClick={handleAdd}
             onClick={()=>handleAdd()}
           >
             ADD
