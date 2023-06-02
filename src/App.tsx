@@ -46,10 +46,11 @@ function App() {
     setInputText(e.target.value);
   }
 
-  const handleAdd = () => {
-    if(inputText === '') return
-    setTodos([...todos,{ task: inputText }])
-    setInputText('')
+  const handleAdd = (e:any) => {
+    if(e.key === 'Enter' && inputText !== '') {
+      setTodos([...todos,{ task: inputText }])
+      setInputText('')
+    }
   }
 
   const handleDelete = (index: number) => {
@@ -72,15 +73,17 @@ function App() {
             label="New Todo"
             value={inputText}
             onChange={handleNewTask}
+            onKeyDown={handleAdd}
           />
-          <CustomButton 
+          {/* <CustomButton 
             variant="contained"
             // 下記でも問題ないのはなぜ？
             // onClick={handleAdd}
-            onClick={()=>handleAdd()}
+            // →eは省略できるから
+            onClick={(e)=>handleAdd(e)}
           >
             ADD
-          </CustomButton>
+          </CustomButton> */}
         </section>
         <section className="list">
           <List>
