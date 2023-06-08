@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo,useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -40,17 +40,29 @@ const CustomButton = styled(Button)({
 
 function App() {
   const [inputText, setInputText] = useState<string>('')
+  const [searchInput, setSearchInput] = useState<string>('')
   const [todos, setTodos] = useState<{task: string}[]>(initialState);
+
+  const showTodoList = useMemo(() => {
+    return todos.filter((todo) => {
+      const regexp = new RegExp("^" + searchInput, "i");
+      return todo.task.match(regexp);
+    })
+  },[searchInput,todos])
 
   const handleNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
   }
 
-  const handleAdd = (e:any) => {
+  const handleAdd = (e: any) => {
     if(e.key === 'Enter' && inputText !== '') {
       setTodos([...todos,{ task: inputText }])
       setInputText('')
     }
+  }
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
   }
 
   const handleDelete = (index: number) => {
@@ -85,9 +97,18 @@ function App() {
             ADD
           </CustomButton> */}
         </section>
+        <section className="section-search-input">
+        <TextField
+            className='input'
+            size="small"
+            label="Search KeyWord"
+            value={searchInput}
+            onChange={handleSearch}
+          />
+        </section>
         <section className="list">
           <List>
-            { todos.map((todo, index) => (
+            { showTodoList.map((todo, index) => (
               <ListItem 
                 key={index}
                 secondaryAction={
